@@ -1,0 +1,14 @@
+# never commit keys or local settings
+.env
+.env.*
+*.key
+.claude/settings.local.json
+# installs and outputs
+node_modules/
+engine/node_modules/
+tholu-videos/
+out/
+*.mp4
+*.mp3
+.props.json
+.DS_Store

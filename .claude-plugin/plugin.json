@@ -1,0 +1,47 @@
+{
+  "name": "tholu-puppets",
+  "displayName": "Tholu Puppets",
+  "version": "1.0.0",
+  "description": "Turn a story script into an animated Tholu Bommalata (Andhra leather shadow-puppet) video: ElevenLabs narration, puppet theatre animation, 9:16 or 16:9 MP4.",
+  "author": {
+    "name": "ankitsharmatv"
+  },
+  "license": "SEE LICENSE IN LICENSE.md",
+  "keywords": [
+    "video",
+    "animation",
+    "storytelling",
+    "puppets",
+    "remotion",
+    "elevenlabs"
+  ],
+  "userConfig": {
+    "elevenlabs_api_key": {
+      "type": "string",
+      "title": "ElevenLabs API key",
+      "description": "Used to record the narration and time the words. Stored in your system keychain, never in a file.",
+      "sensitive": true,
+      "required": true
+    }
+  },
+  "mcpServers": {
+    "tholu-voice": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/mcp/voice-server.mjs"
+      ],
+      "env": {
+        "ELEVENLABS_API_KEY": "${user_config.elevenlabs_api_key}"
+      }
+    }
+  },
+  "homepage": "https://github.com/ankitsharamatv/puppet-animation",
+  "repository": "https://github.com/ankitsharamatv/puppet-animation",
+  "network": {
+    "hosts": [
+      "api.elevenlabs.io",
+      "registry.npmjs.org",
+      "storage.googleapis.com"
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "puppet-animation",
+  "description": "Puppet animation: story videos in Andhra leather shadow-puppet style, made by chatting with Claude Code.",
+  "owner": {
+    "name": "ankitsharmatv"
+  },
+  "plugins": [
+    {
+      "name": "tholu-puppets",
+      "source": "./",
+      "description": "Script in, Tholu Puppets video out (ElevenLabs narration + code animation).",
+      "category": "creative"
+    }
+  ]
+}
