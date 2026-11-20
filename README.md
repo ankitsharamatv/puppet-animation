@@ -18,7 +18,7 @@ opens at the start and closes at the end, and an ElevenLabs voice narrates.
 | | |
 |---|---|
 | **Claude Code** | Any paid Claude plan. Works in the Claude desktop app (Code tab) or the `claude` terminal app. |
-| **ElevenLabs** | An account with an API key. A paid plan (Starter or above) is needed to use library voices such as the default narrator through the API. |
+| **ElevenLabs** | An ElevenLabs account. You just sign in, no API key needed. A paid plan (Starter or above) is recommended so you can use library voices such as the default narrator. |
 | **Node.js 18+** | https://nodejs.org (LTS). Check with `node -v`. |
 | **Disk / internet** | About 600 MB for the renderer (installed once) and an internet connection for the first setup. |
 | **Computer** | macOS, Windows or Linux. Rendering runs on your computer and takes time: about 10–15 minutes per minute of video on a recent laptop. |
@@ -27,14 +27,9 @@ You don't need to install ffmpeg or anything else. The plugin sets up the rest.
 
 ---
 
-## Install (one time, about 3 minutes)
+## Install (one time, about 2 minutes)
 
-### 1. Get your ElevenLabs API key
-1. Sign in at https://elevenlabs.io and open **Developers → API Keys** (or your profile menu → **API Keys**).
-2. Click **Create API key**. Give it access to *Text to Speech*, *Speech to Text*, *Voices* and *User* (read).
-3. Copy the key. You'll paste it into Claude Code in step 3. Never share it or paste it into a chat.
-
-### 2. Add the plugin to Claude Code
+### 1. Add the plugin to Claude Code
 Paste this one line into Claude Code:
 
 ```
@@ -61,22 +56,27 @@ claude plugin install tholu-puppets@puppet-animation
 > Pasted only the link https://github.com/ankitsharamatv/puppet-animation into Claude? Ask it to "install this
 > plugin". Claude can't run `/plugin` commands itself, so it will give you the line above to paste.
 
-### 3. Paste your ElevenLabs key when asked
-Claude Code asks for the **ElevenLabs API key** when the plugin is enabled. It's stored in your computer's secure
-keychain, not in any file, and Claude never sees it in the chat.
+### 2. Sign in to ElevenLabs
+The plugin brings the official ElevenLabs connector with it. Connect it once:
 
-Missed the prompt or need to change the key later? Run `/plugin`, choose **tholu-puppets → Configure options**, paste
-the key, and restart Claude Code.
+1. Type `/mcp` in Claude Code.
+2. Pick **plugin:tholu-puppets:elevenlabs** and choose **Authenticate**.
+3. A browser page opens on elevenlabs.io. Sign in and click **Allow**.
 
-### 4. Restart Claude Code
-This loads the plugin's voice tools. Then check that it's working by asking:
+That's it: there's no API key to create or paste. (From a terminal you can also run
+`claude mcp login plugin:tholu-puppets:elevenlabs`.)
+
+> Already added ElevenLabs as a connector in claude.ai (Settings → Connectors)? That works too, and you can skip this step.
+
+### 3. Check it's ready
+Restart Claude Code if you just installed it, then ask:
 
 ```
 Is the Tholu Puppets plugin ready?
 ```
 
 The first time, Claude runs the setup. It installs the renderer (Remotion and a headless browser) into the plugin's own
-data folder, which takes about 1 minute, then confirms your ElevenLabs key works and shows your remaining credits.
+data folder, which takes about 1 minute, then checks that ElevenLabs is connected and shows your remaining credits.
 
 ---
 
@@ -94,8 +94,8 @@ Claude then:
 
 1. **Checks the cast.** If your story needs a character the puppet set doesn't have (for example Krishna or Shiva), it
    tells you before anything is spent and suggests honest stand-ins.
-2. **Shows the cost.** It tells you how many ElevenLabs credits the narration will use (about 1 credit per character)
-   and how many you have left, then **waits for your OK**.
+2. **Shows the cost.** It tells you how many ElevenLabs credits the narration will use (about 1 credit per character,
+   plus a little for timing the words) and how many you have left, then **waits for your OK**.
 3. **Records the narration** with the default narrator, *Kanika* (a warm Indian storyteller voice), or any ElevenLabs
    voice you ask for, and times every word.
 4. **Plans the scenes** to match what's being said: who's on stage, what they do, the setting, camera moves, and moments
@@ -114,8 +114,8 @@ Scene changes only need a re-render and don't use any ElevenLabs credits. Changi
 and Claude shows the cost again before recording.
 
 ### Want a different narrator?
-Say "use a deep male Hindi voice" (or similar). Claude searches the ElevenLabs voice library, shows a few options with
-preview links, and uses the one you pick.
+Say "use a deep male Hindi voice" (or similar). Claude searches the ElevenLabs voices, shows a few options, and uses
+the one you pick.
 
 ### See every puppet
 Ask "Show me the Tholu Puppets cast" and Claude renders a picture of every available puppet with its name.
@@ -133,13 +133,14 @@ Ask "Show me the Tholu Puppets cast" and Claude renders a picture of every avail
 
 ---
 
-## Privacy and keys
+## Privacy
 
-- Your ElevenLabs key is stored only in your system keychain by Claude Code. It's passed to the plugin's local voice
-  helper and sent only to `api.elevenlabs.io`. It's never written to a file, a log or the chat.
-- Your scripts, audio and videos stay on your computer, in your project folder.
-- The plugin doesn't collect analytics or contact any other server, apart from the one-time downloads of the renderer
-  from npm.
+- There's no API key. You sign in to ElevenLabs in your browser, and Claude Code keeps the sign-in in your system
+  keychain. You can sign out any time from `/mcp` (pick **plugin:tholu-puppets:elevenlabs**).
+- Each narration also appears in your ElevenLabs account (under Flows), like anything you make on elevenlabs.io.
+- Your scripts, audio and videos are saved on your computer, in your project folder.
+- The plugin doesn't collect analytics. Apart from ElevenLabs, it only connects to npm and Google's download servers
+  for the one-time renderer setup, and to ElevenLabs' storage to download your recordings.
 
 ---
 
@@ -147,9 +148,9 @@ Ask "Show me the Tholu Puppets cast" and Claude renders a picture of every avail
 
 | Problem | Fix |
 |---|---|
-| "No ElevenLabs API key is set" | `/plugin` → **tholu-puppets** → **Configure options** → paste the key → restart Claude Code. |
-| `ElevenLabs 401` | The key is wrong or was deleted. Create a new one and set it again as above. |
-| `ElevenLabs 402` / quota | You're out of credits. Top up or wait for your plan to renew. |
+| Claude says ElevenLabs isn't connected / needs authentication | Type `/mcp`, pick **plugin:tholu-puppets:elevenlabs**, choose **Authenticate**, and sign in. |
+| The ElevenLabs tools don't appear at all | Restart Claude Code after installing. Then check `/mcp` again. |
+| Out of credits / quota | Top up or wait for your ElevenLabs plan to renew. |
 | Voice can't be used / library voice error | Library voices need a paid ElevenLabs plan. Upgrade, or pick one of your own voices. |
 | `Node … is too old` | Install Node 18 or newer from nodejs.org, then ask Claude to run the setup again. |
 | Setup or render fails while downloading | Check your internet connection and ask Claude to run the setup again. It's safe to repeat. |
